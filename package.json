@@ -1,0 +1,61 @@
+{
+  "name": "screen-print",
+  "author": "Nullbleed",
+  "version": "1.0.0",
+  "keywords": [
+    "pebble-app"
+  ],
+  "private": true,
+  "dependencies": {
+    "pebble-clay": "^1.0.3",
+    "pebble-fctx": "^1.6.2",
+    "pebble-fctx-compiler": "^1.2.1"
+  },
+  "pebble": {
+    "displayName": "screen-print",
+    "uuid": "47229b1c-f4f7-465d-a456-80d69b7e00df",
+    "capabilities": [
+      "configurable"
+    ],
+    "sdkVersion": "3",
+    "enableMultiJS": true,
+    "targetPlatforms": [
+      "aplite",
+      "basalt",
+      "chalk",
+      "diorite",
+      "emery"
+    ],
+    "watchapp": {
+      "watchface": true
+    },
+    "messageKeys": [
+      "BackgroundColor",
+      "ForegroundColor",
+      "VibrateOnDisconnect",
+      "ShakeForSteps"
+    ],
+    "resources": {
+      "media": [
+        {
+          "type": "bitmap",
+          "name": "IMAGE_WEATHER",
+          "file": "images/wetter_test_front.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "IMAGE_WEATHER_WHITE",
+          "file": "images/wetter_test_back.png"
+        },
+        {
+          "type": "raw",
+          "name": "TEST_FFONT",
+          "file": "font/Porto.ffont"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "pebble-fctx-compiler": "^1.2.0"
+  }
+}
