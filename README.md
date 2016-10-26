@@ -33,7 +33,7 @@ In order to build this watchface you need to follow these steps:
 - Convert the Font with [Fontforge](https://github.com/fontforge/fontforge) into a svg-font.
 - Convert the svg-font with the fctx-compiler with the following command to a ffont:
     `fctx-compiler -r "[a-zA-Z0-9:] Porto.svg"`
--`If you put the `Porto.ffont` into `resources/font/` you are able to build this watchface with
+- If you put the `Porto.ffont` into `resources/font/` you are able to build this watchface with
     `pebble build`
 
 
