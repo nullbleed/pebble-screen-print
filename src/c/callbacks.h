@@ -16,6 +16,9 @@ extern Window* s_window;
 // draw degree sign
 extern bool s_draw_degree;
 
+// offset for battery percent sign
+extern int s_percent_offset;
+
 void update_time(bool);
 void tick_handler(struct tm*, TimeUnits);
 void connection_callback(bool);

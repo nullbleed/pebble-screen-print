@@ -22,6 +22,9 @@ Window *s_window;
 
 bool s_draw_degree;
 
+// offset for battery percent sign
+int s_percent_offset = 0;
+
 // updates the different time layers
 void update_time(bool init) {
     // get time
@@ -107,6 +110,13 @@ void battery_callback(BatteryChargeState state) {
         // print battery level to battery buffer
         s_battery_level = state.charge_percent;
         snprintf(s_battery_buffer, sizeof(s_battery_buffer), "%d", s_battery_level);
+
+        // set percent offset for self drawn percent sign on 100% battery
+        if (s_battery_level == 100) {
+            s_percent_offset = 2;
+        } else {
+            s_percent_offset = -2;
+        }
 
         // refresh battery render layer
         layer_mark_dirty(s_battery_render_layer);

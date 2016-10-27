@@ -24,8 +24,6 @@ static int s_temp_render_offset = 110;
 static int s_temp_unit_offset = 2;
 #endif
 
-static int s_percent_offset = 0;
-
 // render font
 void render_text(GContext *ctx, char *buffer, int offset_x, int offset_y, int font_size, GTextAlignment alignment) {
     // create new fontcontext and initialize it
@@ -67,14 +65,6 @@ void time_render_proc(Layer *layer, GContext *ctx) {
 void battery_render_proc(Layer *layer, GContext *ctx) {
     // get layer bounds
     GRect bounds = layer_get_bounds(layer);
-
-    // set percent offset for self drawn percent sign on 100% battery
-    if (s_battery_level == 100) {
-        s_percent_offset = 4;
-    } else {
-        s_percent_offset = 0;
-    }
-
 
     // render the given text
     // (context, text_string, offset_x, offset_y, font_size, GTextAlignment)
