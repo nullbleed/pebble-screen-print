@@ -8,8 +8,8 @@ FFont *s_render_font;
 static GTextAlignment s_date_align = GTextAlignmentRight;
 static GTextAlignment s_temp_align = GTextAlignmentLeft;
 
-static int s_date_render_offset = 37;
-static int s_temp_render_offset = 113;
+static int s_date_render_offset = 32;
+static int s_temp_render_offset = 118;
 static int s_temp_unit_offset = 0;
 #elif defined(PBL_RECT)
 static GTextAlignment s_date_align = GTextAlignmentLeft;
@@ -58,7 +58,11 @@ void time_render_proc(Layer *layer, GContext *ctx) {
     
     // render the given text
     // (context, text_string, offset_x, offset_y, font_size, GTextAlignment)
+#if defined(PBL_ROUND)
+    render_text(ctx, s_time_buffer, bounds.size.w / 2, 50, 50, GTextAlignmentCenter);
+#else
     render_text(ctx, s_time_buffer, bounds.size.w / 2, 52, 47, GTextAlignmentCenter);
+#endif
 }
 
 // battery render proc
@@ -126,10 +130,10 @@ void init_proc(Layer *layer, GContext *ctx) {
 
     //draw lines in the middle
     graphics_context_set_fill_color(ctx, s_foreground_color);
-    graphics_fill_rect(ctx, GRect(40, 40, bounds.size.w - 80, 4), 2, GCornersAll);
+    graphics_fill_rect(ctx, GRect(35, 37, bounds.size.w - 70, 4), 2, GCornersAll);
 
     graphics_context_set_fill_color(ctx, s_foreground_color);
-    graphics_fill_rect(ctx, GRect(20, 95, bounds.size.w - 40, 4), 2, GCornersAll);
+    graphics_fill_rect(ctx, GRect(15, 95, bounds.size.w - 30, 4), 2, GCornersAll);
 
     // draw degree sign
     if (s_draw_degree) {

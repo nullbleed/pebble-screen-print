@@ -114,6 +114,10 @@ void battery_callback(BatteryChargeState state) {
         // set percent offset for self drawn percent sign on 100% battery
         if (s_battery_level == 100) {
             s_percent_offset = 2;
+        } else if (s_battery_level == 10){
+            s_percent_offset = -5;
+        } else if (s_battery_level == 0){
+            s_percent_offset = -9;
         } else {
             s_percent_offset = -2;
         }

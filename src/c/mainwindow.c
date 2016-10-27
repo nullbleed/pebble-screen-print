@@ -24,10 +24,12 @@ GColor s_foreground_color = GColorBlack;
 
 // weather offset
 #if defined(PBL_ROUND)
-int s_temp_offset = 42;
-int s_icon_offset_y = 5;
+int s_temp_offset = 37;
+int s_icon_offset_x = 45;
+int s_icon_offset_y = 10;
 #elif defined(PBL_RECT)
 int s_temp_offset = 53;
+int s_icon_offset_x = 45;
 int s_icon_offset_y = 12;
 #endif
 
@@ -70,7 +72,7 @@ void main_window_load(Window *window) {
     s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_WEATHER);
 
     // create BitmapLayer to display the GBitmap
-    s_background_bm_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - 45, bounds.size.h / 2 + s_icon_offset_y, 100, 70));
+    s_background_bm_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - s_icon_offset_x, bounds.size.h / 2 + s_icon_offset_y, 100, 70));
     bitmap_layer_set_compositing_mode(s_background_bm_layer, GCompOpSet);
     bitmap_layer_set_bitmap(s_background_bm_layer, s_background_bitmap);
 
@@ -82,7 +84,7 @@ void main_window_load(Window *window) {
     s_white_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_WEATHER_WHITE);
 
     // create BitmapLayer to display the GBitmap
-    s_background_wbm_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - 45, bounds.size.h / 2 + s_icon_offset_y, 100, 70));
+    s_background_wbm_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - s_icon_offset_x, bounds.size.h / 2 + s_icon_offset_y, 100, 70));
     bitmap_layer_set_compositing_mode(s_background_wbm_layer, GCompOpSet);
     bitmap_layer_set_bitmap(s_background_wbm_layer, s_white_bitmap);
 
