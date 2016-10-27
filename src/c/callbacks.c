@@ -59,7 +59,35 @@ void update_time(bool init) {
             strftime(s_date_num_buffer, sizeof(s_date_num_buffer), "%e", tick_time);
             layer_mark_dirty(s_date_render_layer);
         }
+
+        if (!init) {
+            request_weather();
+        }
+    } 
+}
+
+// get weather information
+void request_weather() {
+    // create dict that is going to be send
+    DictionaryIterator *iter;
+
+    // register dict to the outbox handler
+    app_message_outbox_begin(&iter);
+
+    // write information to dict
+    //dict_write_begin(iter, buffer, sizeof(buffer));
+    if (settings.WeatherUseGPS) {
+        dict_write_cstring(iter, MESSAGE_KEY_Location, "gps");
+    } else {
+        dict_write_cstring(iter, MESSAGE_KEY_Location, "none");
     }
+
+    // write last element of dict
+    dict_write_uint8(iter, 0, 0);
+
+    // send dict to pkjs
+    app_message_outbox_send();
+    
 }
 
 // callback for the time service which marks the time layer as dirty to refresh it
@@ -163,4 +191,27 @@ void reset_timer(void *data) {
     layer_add_child(window_layer, s_temp_render_layer);
     layer_add_child(window_layer, bitmap_layer_get_layer(s_background_wbm_layer));
     layer_add_child(window_layer, bitmap_layer_get_layer(s_background_bm_layer));
+}
+
+void weather_received_callback(DictionaryIterator *iterator, void *context) {
+    APP_LOG(APP_LOG_LEVEL_INFO, "Message received");
+
+    // Read tuples for data
+    Tuple *temp_tuple = dict_find(iterator, MESSAGE_KEY_Temperature);
+    //Tuple *conditions_tuple = dict_find(iterator, MESSAGE_KEY_Conditions);
+
+    snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "%d", (int) temp_tuple->value->int32);
+    layer_mark_dirty(s_temp_render_layer);
+}
+
+void weather_dropped_callback(AppMessageResult reason, void *context) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+}
+
+void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+    APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+}
+
+void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+    APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }

@@ -20,8 +20,13 @@ extern bool s_draw_degree;
 extern int s_percent_offset;
 
 void update_time(bool);
+void request_weather();
 void tick_handler(struct tm*, TimeUnits);
 void connection_callback(bool);
 void battery_callback(BatteryChargeState);
 void accelerometer_callback(AccelAxisType, int32_t);
 void reset_timer(void*);
+void weather_received_callback(DictionaryIterator*, void*);
+void weather_dropped_callback(AppMessageResult, void*);
+void outbox_failed_callback(DictionaryIterator*, AppMessageResult, void*);
+void outbox_sent_callback(DictionaryIterator*, void*);

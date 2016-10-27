@@ -99,7 +99,7 @@ void main_window_load(Window *window) {
     layer_add_child(window_layer, bitmap_layer_get_layer(s_background_bm_layer));
 
     //NOTE: remove this when implemented
-    snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "10");
+    snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), s_temp_num_buffer);
     snprintf(s_temp_unit_buffer, sizeof(s_temp_num_buffer), "C");
 
     prv_update_display();

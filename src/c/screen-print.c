@@ -11,6 +11,9 @@ void init() {
 
     // open app message callback
     app_message_register_inbox_received(prv_inbox_received_handler);
+    app_message_register_inbox_dropped(weather_dropped_callback);
+    app_message_register_outbox_failed(outbox_failed_callback);
+    app_message_register_outbox_sent(outbox_sent_callback);
     app_message_open(128, 128);
 
     // create main window
@@ -39,6 +42,10 @@ void init() {
     connection_service_subscribe((ConnectionHandlers) {
             .pebble_app_connection_handler = connection_callback,
     });
+
+    // timeout needed to wait for pkjs-callback to be registered
+    psleep(500);
+    request_weather();
 }
 
 // deinitialize the main window and free memory

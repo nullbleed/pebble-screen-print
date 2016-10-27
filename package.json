@@ -15,7 +15,9 @@
     "displayName": "screen-print",
     "uuid": "47229b1c-f4f7-465d-a456-80d69b7e00df",
     "capabilities": [
-      "configurable"
+      "configurable",
+      "location",
+      "health"
     ],
     "sdkVersion": "3",
     "enableMultiJS": true,
@@ -33,7 +35,12 @@
       "BackgroundColor",
       "ForegroundColor",
       "VibrateOnDisconnect",
-      "ShakeForSteps"
+      "Location",
+      "ShakeForSteps",
+      "WeatherUseGPS",
+      "WeatherLocation",
+      "Temperature",
+      "Conditions"
     ],
     "resources": {
       "media": [

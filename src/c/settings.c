@@ -14,6 +14,7 @@ void prv_default_settings() {
 #endif
     settings.VibrateOnDisconnect = false;
     settings.ShakeForSteps = true;
+    settings.WeatherUseGPS = true;
 }
 
 // load settings
@@ -92,5 +93,14 @@ void prv_inbox_received_handler(DictionaryIterator *iter, void *context) {
 
     // save the new settings
     prv_save_settings();
+
+    // Read tuples for weather data
+    Tuple *temp_tuple = dict_find(iter, MESSAGE_KEY_Temperature);
+    //Tuple *conditions_tuple = dict_find(iter, MESSAGE_KEY_Conditions);
+    
+    if(temp_tuple) {
+        snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "%d", (int) temp_tuple->value->int32);
+    }
+    layer_mark_dirty(s_temp_render_layer);
 }
 

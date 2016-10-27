@@ -30,6 +30,46 @@ module.exports = [
   },
   {
     "type": "section",
+    "capabilities": ["HEALTH"],
+    "items": [
+      {
+        "type": "heading",
+        "defaultValue": "Health Settings"
+      },
+      {
+        "type": "toggle",
+        "messageKey": "ShakeForSteps",
+        "label": "Shake for steps",
+        "defaultValue": true
+      }
+    ]
+  },
+  {
+    "type": "section",
+    "items": [
+      {
+        "type": "heading",
+        "defaultValue": "Weather Settings"
+      },
+      {
+        "type": "toggle",
+        "messageKey": "WeatherUseGPS",
+        "label": "Use GPS",
+        "defaultValue": true
+      },
+      {
+        "type": "input",
+        "messageKey": "WeatherLocation",
+        "defaultValue": "",
+        "label": "Weather Location",
+        "attributes": {
+          "placeholder": "eg: Berlin",
+      }
+    }
+    ]
+  },
+  {
+    "type": "section",
     "items": [
       {
         "type": "heading",
@@ -40,12 +80,6 @@ module.exports = [
         "messageKey": "VibrateOnDisconnect",
         "label": "Vibrate on disconnect",
         "defaultValue": false
-      },
-      {
-        "type": "toggle",
-        "messageKey": "ShakeForSteps",
-        "label": "Shake for steps",
-        "defaultValue": true
       }
     ]
   },

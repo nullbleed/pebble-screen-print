@@ -14,6 +14,7 @@ typedef struct ClaySettings {
     bool Animations;
     bool VibrateOnDisconnect;
     bool ShakeForSteps;
+    bool WeatherUseGPS;
 } ClaySettings;
 
 // an instance of the struct
