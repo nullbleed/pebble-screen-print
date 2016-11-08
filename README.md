@@ -9,7 +9,7 @@ A watchface designed by [/u/stegosaurusflex1](https://www.reddit.com/user/stegos
 - Battery level
 - Custom colors
 - Vibrate on disconnect
-- Weather (not yet implemented)
+- Weather (design improvements and icons needed)
 - Shake for Steps (not yet implemented)
 
 

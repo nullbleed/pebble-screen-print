@@ -30,3 +30,4 @@ void weather_received_callback(DictionaryIterator*, void*);
 void weather_dropped_callback(AppMessageResult, void*);
 void outbox_failed_callback(DictionaryIterator*, AppMessageResult, void*);
 void outbox_sent_callback(DictionaryIterator*, void*);
+void steps_callback(HealthEventType, void*);

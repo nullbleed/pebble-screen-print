@@ -6,12 +6,29 @@ var clayConfig = require('./config');
 var clay = new Clay(clayConfig);
 
 // api key
-var myAPIKey = '';
+var myAPIKey = 'f1ec56c0595742ceccd56de618aa8aea';
+var initialized = false;
 
 // weather
 Pebble.addEventListener('ready', 
     function(e) {
         console.log('PebbleKit JS ready!');
+        initialized = true;
+
+        // send init message
+        dict = {
+            'Init': 1
+        };
+
+        // Send to Pebble
+        Pebble.sendAppMessage(dict,
+            function(e) {
+                console.log('Weather info sent to Pebble successfully!');
+            },
+            function(e) {
+                console.log('Error sending weather info to Pebble!');
+            }
+        );
     }
 );
 
@@ -77,6 +94,20 @@ function locationSuccess(pos) {
 
 function locationError(err) {
     console.log('Error requesting location!');
+    var dictionary = {
+        'Temperature': -300,
+        'Conditions': -300
+    };
+
+    // Send to Pebble
+    Pebble.sendAppMessage(dictionary,
+        function(e) {
+            console.log('Weather info sent to Pebble successfully!');
+        },
+        function(e) {
+            console.log('Error sending weather info to Pebble!');
+        }
+    );
 }
 
 function requestPosition(pos) {
@@ -117,13 +148,17 @@ function requestPosition(pos) {
 }
 
 function getWeather(locate) {
-    if (locate === "gps") {
-        navigator.geolocation.getCurrentPosition(
-            locationSuccess,
-            locationError,
-            {timeout: 15000, maximumAge: 60000}
-        );
+    if (!initialized) {
+        setTimeout(6000, getWeather);
     } else {
-        requestPosition(locate); 
+        if (locate === "gps") {
+            navigator.geolocation.getCurrentPosition(
+                locationSuccess,
+                locationError,
+                {timeout: 15000, maximumAge: 60000}
+            );
+        } else {
+            requestPosition(locate); 
+        }
     }
 }

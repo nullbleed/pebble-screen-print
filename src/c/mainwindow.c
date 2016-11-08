@@ -6,6 +6,7 @@ Layer *s_time_render_layer;
 Layer *s_battery_render_layer;
 Layer *s_date_render_layer;
 Layer *s_temp_render_layer;
+Layer *s_steps_render_layer;
 
 BitmapLayer *s_background_bm_layer;
 GBitmap *s_background_bitmap;
@@ -44,6 +45,9 @@ void main_window_load(Window *window) {
     // set the background color for the root window
     window_set_background_color(s_main_window, s_background_color);
 
+    // set initial weather string
+    snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "-");
+
     // get font from resource
     s_render_font = ffont_create_from_resource(RESOURCE_ID_TEST_FFONT);
 
@@ -68,8 +72,14 @@ void main_window_load(Window *window) {
     s_temp_render_layer = layer_create(GRect(bounds.size.w - s_temp_offset, 102, 40, 25));
     layer_set_update_proc(s_temp_render_layer, temp_render_proc);
 
+    // steps render layer
+    s_steps_render_layer = layer_create(GRect(bounds.size.w - s_temp_offset, 102, 40, 25));
+    layer_set_update_proc(s_steps_render_layer, steps_render_proc);
+
     // create GBitmap
     s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_WEATHER);
+
+    snprintf(s_steps_buffer, sizeof(s_steps_buffer), "-");
 
     // create BitmapLayer to display the GBitmap
     s_background_bm_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - s_icon_offset_x, bounds.size.h / 2 + s_icon_offset_y, 100, 70));

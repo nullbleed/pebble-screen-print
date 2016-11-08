@@ -15,6 +15,7 @@ typedef struct ClaySettings {
     bool VibrateOnDisconnect;
     bool ShakeForSteps;
     bool WeatherUseGPS;
+    char *Location;
 } ClaySettings;
 
 // an instance of the struct
@@ -39,6 +40,7 @@ extern Layer *s_time_render_layer;
 extern Layer *s_battery_render_layer;
 extern Layer *s_date_render_layer;
 extern Layer *s_temp_render_layer;
+extern Layer *s_steps_render_layer;
 
 extern BitmapLayer *s_background_wbm_layer;
 extern GBitmap *s_background_bitmap;

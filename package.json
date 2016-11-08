@@ -39,6 +39,7 @@
       "ShakeForSteps",
       "WeatherUseGPS",
       "WeatherLocation",
+      "Init",
       "Temperature",
       "Conditions"
     ],

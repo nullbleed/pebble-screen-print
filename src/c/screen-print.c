@@ -6,6 +6,9 @@ Window *s_main_window;
 // initialize the main window and subscribe to services
 // push the main window to the screen
 void init() {
+    // allocate buffer for the location settings
+    //settings.Location = calloc(sizeof(char), 33);
+
     // load settings from storage or default settings
     prv_load_settings();
 
@@ -42,14 +45,11 @@ void init() {
     connection_service_subscribe((ConnectionHandlers) {
             .pebble_app_connection_handler = connection_callback,
     });
-
-    // timeout needed to wait for pkjs-callback to be registered
-    psleep(500);
-    request_weather();
 }
 
 // deinitialize the main window and free memory
 void deinit() {
+    //free(settings.Location);
     window_destroy(s_main_window);
 }
 

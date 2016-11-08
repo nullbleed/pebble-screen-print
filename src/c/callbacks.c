@@ -79,7 +79,11 @@ void request_weather() {
     if (settings.WeatherUseGPS) {
         dict_write_cstring(iter, MESSAGE_KEY_Location, "gps");
     } else {
-        dict_write_cstring(iter, MESSAGE_KEY_Location, "none");
+        if (strncmp(settings.Location, "", strlen(settings.Location)) > 0 ) {
+            dict_write_cstring(iter, MESSAGE_KEY_Location, settings.Location);
+        } else {
+            dict_write_cstring(iter, MESSAGE_KEY_Location, settings.Location);
+        }
     }
 
     // write last element of dict
@@ -160,6 +164,8 @@ void battery_callback(BatteryChargeState state) {
 
 // accelerometer callback
 void accelerometer_callback(AccelAxisType axis, int32_t direction) {
+    Layer *window_layer = window_get_root_layer(s_window);
+
     // remove temperature layer from main window
     layer_remove_from_parent(s_temp_render_layer);
     layer_remove_from_parent(bitmap_layer_get_layer(s_background_bm_layer));
@@ -169,8 +175,14 @@ void accelerometer_callback(AccelAxisType axis, int32_t direction) {
     s_draw_degree = false;
     layer_mark_dirty(s_background_layer);
 
+#if defined(PBL_HEALTH)
+            if(!health_service_events_subscribe(steps_callback, NULL)) {
+                APP_LOG(APP_LOG_LEVEL_ERROR, "Health not available!");
+            }
+#endif
+
     // add steps layer to main window
-    //layer_add_child(window_layer, s_steps_render_layer);
+    layer_add_child(window_layer, s_steps_render_layer);
 
     // start reset timer
     app_timer_register(3000, (AppTimerCallback) reset_timer, NULL);
@@ -182,6 +194,7 @@ void reset_timer(void *data) {
 
     //TODO: remove steps layer from main window
     //layer_pop_child(window_layer, s_steps_render_layer);
+    layer_remove_from_parent(s_steps_render_layer);
 
     // add degree sign
     s_draw_degree = true;
@@ -214,4 +227,27 @@ void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reaso
 
 void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
     APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+}
+
+// steps callback
+void steps_callback(HealthEventType event, void *context) {
+    HealthMetric metric = HealthMetricStepCount;
+    time_t start = time_start_of_today();
+    time_t end = time(NULL);
+
+    // Check the metric has data available for today
+    HealthServiceAccessibilityMask mask = health_service_metric_accessible(metric, 
+      start, end);
+
+    if(mask & HealthServiceAccessibilityMaskAvailable) {
+        // Data is available!
+        APP_LOG(APP_LOG_LEVEL_INFO, "Steps today: %d", 
+              (int)health_service_sum_today(metric));
+        snprintf(s_steps_buffer, sizeof(s_steps_buffer), "%d", (int) health_service_sum_today(metric));
+    } else {
+        // No data recorded yet today
+        APP_LOG(APP_LOG_LEVEL_ERROR, "Data unavailable!");
+    }
+
+    layer_mark_dirty(s_steps_render_layer);
 }

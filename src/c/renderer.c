@@ -8,7 +8,7 @@ FFont *s_render_font;
 static GTextAlignment s_date_align = GTextAlignmentRight;
 static GTextAlignment s_temp_align = GTextAlignmentLeft;
 
-static int s_date_render_offset = 32;
+static int s_date_render_offset = 35;
 static int s_temp_render_offset = 118;
 static int s_temp_unit_offset = 0;
 #elif defined(PBL_RECT)
@@ -23,6 +23,40 @@ static int s_temp_render_offset = 110;
 #endif
 static int s_temp_unit_offset = 2;
 #endif
+
+
+// calculate font render offset
+int get_font_offset(char *buffer) {
+    int offset = 0;
+
+    //offset = 13 * (strlen(s_temp_num_buffer) - 2);
+    for (int i=0; i <= (signed int) strlen(buffer); i++) {
+        switch (buffer[i]) {
+            case '1':
+                offset = offset + 8;
+                APP_LOG(APP_LOG_LEVEL_INFO, "Offset + 8");
+                break;
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+            case '0':
+            case '-':
+            case 'C':
+                offset = offset + 13;
+                APP_LOG(APP_LOG_LEVEL_INFO, "Offset + 13");
+                break;
+            
+        }
+    }
+
+    return offset;
+}
+
 
 // render font
 void render_text(GContext *ctx, char *buffer, int offset_x, int offset_y, int font_size, GTextAlignment alignment) {
@@ -86,6 +120,25 @@ void date_render_proc(Layer *layer, GContext *ctx) {
     render_text(ctx, s_date_num_buffer, (bounds.size.w / 2) + s_date_render_offset, 125, 19, s_date_align);
 }
 
+// steps render proc
+void steps_render_proc(Layer *layer, GContext *ctx) {
+    // get layer bounds
+    GRect bounds = layer_get_bounds(layer);
+
+    //another offset for round watches because the text is left aligned
+    //TODO: improve dynamic offset
+    int size_offset;
+#if defined(PBL_ROUND)
+    size_offset = get_font_offset(s_steps_buffer);
+#else
+    size_offset = 20;
+#endif
+
+    // render the given text
+    // (context, text_string, offset_x, offset_y, font_size, GTextAlignment)
+    render_text(ctx, s_steps_buffer, (bounds.size.w / 2) + s_temp_render_offset - s_temp_unit_offset + 25 - size_offset, 107, 19, s_temp_align);
+}
+
 // temp render proc
 void temp_render_proc(Layer *layer, GContext *ctx) {
     // get layer bounds
@@ -95,15 +148,22 @@ void temp_render_proc(Layer *layer, GContext *ctx) {
     //TODO: improve dynamic offset
     int size_offset;
 #if defined(PBL_ROUND)
-    size_offset = 13 * (strlen(s_temp_num_buffer) - 2);
+    size_offset = get_font_offset(s_temp_num_buffer);
 #else
-    size_offset = 0;
+    size_offset = 20;
 #endif
 
     // render the given text
     // (context, text_string, offset_x, offset_y, font_size, GTextAlignment)
-    render_text(ctx, s_temp_num_buffer, (bounds.size.w / 2) + s_temp_render_offset - s_temp_unit_offset - size_offset, 107, 19, s_temp_align);
-    render_text(ctx, s_temp_unit_buffer, (bounds.size.w / 2) + s_temp_render_offset - size_offset, 125, 19, s_temp_align);
+    render_text(ctx, s_temp_num_buffer, (bounds.size.w / 2) + s_temp_render_offset - s_temp_unit_offset + 20 - size_offset, 107, 19, s_temp_align);
+    if (s_temp_num_buffer[0] == '-' && strncmp(s_temp_num_buffer, "-", strlen(s_temp_num_buffer)) > 0) {
+        render_text(ctx, s_temp_unit_buffer, (bounds.size.w / 2) + s_temp_render_offset + 33 - size_offset, 125, 19, s_temp_align);
+    } else {
+        if (size_offset <= 13) {
+            size_offset = 15;
+        }
+        render_text(ctx, s_temp_unit_buffer, (bounds.size.w / 2) + s_temp_render_offset + 20 - size_offset, 125, 19, s_temp_align);
+    }
 }
 
 // initialize procedure for background graphics
