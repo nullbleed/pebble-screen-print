@@ -54,6 +54,7 @@ void update_time(bool init) {
         if (hours == 0 || init) {
             // set day
             strftime(s_date_day_buffer, sizeof(s_date_day_buffer), "%a", tick_time);
+            snprintf(s_date_day_buffer, 3, "%c%c", s_date_day_buffer[0], s_date_day_buffer[1]);
 
             // set date
             strftime(s_date_num_buffer, sizeof(s_date_num_buffer), "%e", tick_time);

@@ -13,6 +13,7 @@ typedef struct ClaySettings {
     bool SecondTick;
     bool Animations;
     bool VibrateOnDisconnect;
+    bool DisconnectIndicator;
     bool ShakeForSteps;
     bool WeatherUseGPS;
     char *Location;

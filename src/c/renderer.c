@@ -8,7 +8,7 @@ FFont *s_render_font;
 static GTextAlignment s_date_align = GTextAlignmentRight;
 static GTextAlignment s_temp_align = GTextAlignmentLeft;
 
-static int s_date_render_offset = 35;
+static int s_date_render_offset = 25;
 static int s_temp_render_offset = 118;
 static int s_temp_unit_offset = 0;
 #elif defined(PBL_RECT)
@@ -19,7 +19,7 @@ static int s_date_render_offset = -14;
 #if defined(PBL_PLATFORM_EMERY)
 static int s_temp_render_offset = 165;
 #else
-static int s_temp_render_offset = 110;
+static int s_temp_render_offset = 113;
 #endif
 static int s_temp_unit_offset = 2;
 #endif
@@ -156,6 +156,7 @@ void temp_render_proc(Layer *layer, GContext *ctx) {
     // render the given text
     // (context, text_string, offset_x, offset_y, font_size, GTextAlignment)
     render_text(ctx, s_temp_num_buffer, (bounds.size.w / 2) + s_temp_render_offset - s_temp_unit_offset + 20 - size_offset, 107, 19, s_temp_align);
+#if defined(PBL_ROUND)
     if (s_temp_num_buffer[0] == '-' && strncmp(s_temp_num_buffer, "-", strlen(s_temp_num_buffer)) > 0) {
         render_text(ctx, s_temp_unit_buffer, (bounds.size.w / 2) + s_temp_render_offset + 33 - size_offset, 125, 19, s_temp_align);
     } else {
@@ -164,6 +165,9 @@ void temp_render_proc(Layer *layer, GContext *ctx) {
         }
         render_text(ctx, s_temp_unit_buffer, (bounds.size.w / 2) + s_temp_render_offset + 20 - size_offset, 125, 19, s_temp_align);
     }
+#else
+    render_text(ctx, s_temp_unit_buffer, (bounds.size.w / 2) + s_temp_render_offset + 20 - size_offset, 125, 19, s_temp_align);
+#endif
 }
 
 // initialize procedure for background graphics
@@ -175,7 +179,11 @@ void init_proc(Layer *layer, GContext *ctx) {
     if (s_connection_state == true) {
         graphics_context_set_fill_color(ctx, s_background_color);
     } else { // if connection is lost, draw it white
-        graphics_context_set_fill_color(ctx, GColorWhite);
+        if (settings.DisconnectIndicator == true) {
+            graphics_context_set_fill_color(ctx, GColorWhite);
+        } else {
+            graphics_context_set_fill_color(ctx, s_background_color);
+        }
     }
     graphics_fill_rect(ctx, GRect(0, 0, bounds.size.w, bounds.size.h), 0, 0);
 
@@ -219,7 +227,7 @@ void init_proc(Layer *layer, GContext *ctx) {
     // draw degree sign
     if (s_draw_degree) {
         graphics_context_set_fill_color(ctx, s_foreground_color);
-        graphics_fill_circle(ctx, GPoint(bounds.size.w - s_temp_offset + 39, 108), 1);
+        graphics_fill_circle(ctx, GPoint(bounds.size.w - s_temp_offset + 42, 108), 1);
     }
 #endif
     

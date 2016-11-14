@@ -13,6 +13,7 @@ void prv_default_settings() {
     settings.ForegroundColor = GColorBlack;
 #endif
     settings.VibrateOnDisconnect = false;
+    settings.DisconnectIndicator = true;
     settings.ShakeForSteps = true;
     settings.WeatherUseGPS = true;
     settings.Location = "";
@@ -86,6 +87,12 @@ void prv_inbox_received_handler(DictionaryIterator *iter, void *context) {
         settings.VibrateOnDisconnect = vibe_on_disconnect_t->value->int32 == 1;
     }
 
+    // get disconnect indicator settings
+    Tuple *disconnect_t = dict_find(iter, MESSAGE_KEY_DisconnectIndicator);
+    if (disconnect_t) {
+        settings.DisconnectIndicator = disconnect_t->value->int32 == 1;
+    }
+
     // get shake for steps settings
     Tuple *shake_for_steps_t = dict_find(iter, MESSAGE_KEY_ShakeForSteps);
     if (shake_for_steps_t) {
@@ -132,9 +139,17 @@ void prv_inbox_received_handler(DictionaryIterator *iter, void *context) {
     
     if(temp_tuple) {
         if (((int) temp_tuple->value->int32) == -300) {
-            snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "10");
+            snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "-");
         } else {
+#if defined(PBL_ROUND)
+            if ((int) temp_tuple->value->int32 < 0) {
+                snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "%03d", (int) temp_tuple->value->int32);
+            } else {
+                snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "%02d", (int) temp_tuple->value->int32);
+            }
+#else
             snprintf(s_temp_num_buffer, sizeof(s_temp_num_buffer), "%d", (int) temp_tuple->value->int32);
+#endif
         }
     }
     layer_mark_dirty(s_temp_render_layer);

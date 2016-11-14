@@ -26,11 +26,11 @@ GColor s_foreground_color = GColorBlack;
 // weather offset
 #if defined(PBL_ROUND)
 int s_temp_offset = 37;
-int s_icon_offset_x = 45;
+int s_icon_offset_x = 50;
 int s_icon_offset_y = 10;
 #elif defined(PBL_RECT)
 int s_temp_offset = 53;
-int s_icon_offset_x = 45;
+int s_icon_offset_x = 50;
 int s_icon_offset_y = 12;
 #endif
 

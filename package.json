@@ -35,6 +35,7 @@
       "BackgroundColor",
       "ForegroundColor",
       "VibrateOnDisconnect",
+      "DisconnectIndicator",
       "Location",
       "ShakeForSteps",
       "WeatherUseGPS",

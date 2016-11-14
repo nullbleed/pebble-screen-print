@@ -80,6 +80,12 @@ module.exports = [
         "messageKey": "VibrateOnDisconnect",
         "label": "Vibrate on disconnect",
         "defaultValue": false
+      },
+      {
+        "type": "toggle",
+        "messageKey": "DisconnectIndicator",
+        "label": "Disconnect indicator",
+        "defaultValue": true
       }
     ]
   },
