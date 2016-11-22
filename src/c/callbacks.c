@@ -184,6 +184,8 @@ void accelerometer_callback(AccelAxisType axis, int32_t direction) {
 
     // add steps layer to main window
     layer_add_child(window_layer, s_steps_render_layer);
+    layer_add_child(window_layer, bitmap_layer_get_layer(s_background_wstep_layer));
+    layer_add_child(window_layer, bitmap_layer_get_layer(s_background_step_layer));
 
     // start reset timer
     app_timer_register(3000, (AppTimerCallback) reset_timer, NULL);
@@ -196,6 +198,8 @@ void reset_timer(void *data) {
     //TODO: remove steps layer from main window
     //layer_pop_child(window_layer, s_steps_render_layer);
     layer_remove_from_parent(s_steps_render_layer);
+    layer_remove_from_parent(bitmap_layer_get_layer(s_background_step_layer));
+    layer_remove_from_parent(bitmap_layer_get_layer(s_background_wstep_layer));
 
     // add degree sign
     s_draw_degree = true;

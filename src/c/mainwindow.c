@@ -14,6 +14,12 @@ GBitmap *s_background_bitmap;
 BitmapLayer *s_background_wbm_layer;
 GBitmap *s_white_bitmap;
 
+BitmapLayer *s_background_step_layer;
+GBitmap *s_step_bitmap;
+
+BitmapLayer *s_background_wstep_layer;
+GBitmap *s_wstep_bitmap;
+
 // colors
 #if defined(PBL_COLOR)
 GColor s_background_color = GColorPictonBlue;
@@ -30,7 +36,7 @@ int s_icon_offset_x = 50;
 int s_icon_offset_y = 10;
 #elif defined(PBL_RECT)
 int s_temp_offset = 53;
-int s_icon_offset_x = 50;
+int s_icon_offset_x = 47;
 int s_icon_offset_y = 12;
 #endif
 
@@ -98,6 +104,26 @@ void main_window_load(Window *window) {
     bitmap_layer_set_compositing_mode(s_background_wbm_layer, GCompOpSet);
     bitmap_layer_set_bitmap(s_background_wbm_layer, s_white_bitmap);
 
+    // create GBitmap
+    s_step_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_STEPS);
+
+    // create BitmapLayer to display the GBitmap
+    s_background_step_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - s_icon_offset_x, bounds.size.h / 2 + s_icon_offset_y, 100, 70));
+    bitmap_layer_set_compositing_mode(s_background_step_layer, GCompOpSet);
+    bitmap_layer_set_bitmap(s_background_step_layer, s_step_bitmap);
+
+#if defined(PBL_COLOR)
+    replace_gbitmap_color(GColorBlack, s_foreground_color, s_step_bitmap, s_background_step_layer);
+#endif
+
+    // create GBitmap
+    s_wstep_bitmap = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_STEPS_BACKGROUND);
+
+    // create BitmapLayer to display the GBitmap
+    s_background_wstep_layer = bitmap_layer_create(GRect(bounds.size.w / 2 - s_icon_offset_x, bounds.size.h / 2 + s_icon_offset_y, 100, 70));
+    bitmap_layer_set_compositing_mode(s_background_wstep_layer, GCompOpSet);
+    bitmap_layer_set_bitmap(s_background_wstep_layer, s_wstep_bitmap);
+
     // add the layers to the main window
     layer_add_child(window_layer, s_background_layer);
     layer_add_child(window_layer, s_time_render_layer);
@@ -119,8 +145,12 @@ void main_window_load(Window *window) {
 void main_window_unload(Window *window) {
     layer_destroy(s_background_layer);
     bitmap_layer_destroy(s_background_bm_layer);
+    bitmap_layer_destroy(s_background_wbm_layer);
+    bitmap_layer_destroy(s_background_step_layer);
+    bitmap_layer_destroy(s_background_wstep_layer);
     layer_destroy(s_time_render_layer);
     layer_destroy(s_date_render_layer);
     layer_destroy(s_battery_render_layer);
     layer_destroy(s_temp_render_layer);
+    
 }

@@ -57,6 +57,16 @@
           "file": "images/wetter_test_back.png"
         },
         {
+          "type": "bitmap",
+          "name": "IMAGE_STEPS",
+          "file": "images/steps-05.png"
+        },
+        {
+          "type": "bitmap",
+          "name": "IMAGE_STEPS_BACKGROUND",
+          "file": "images/steps-05-05.png"
+        },
+        {
           "type": "raw",
           "name": "TEST_FFONT",
           "file": "font/Porto.ffont"

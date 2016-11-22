@@ -48,3 +48,9 @@ extern GBitmap *s_background_bitmap;
 
 extern BitmapLayer *s_background_bm_layer;
 extern GBitmap *s_white_bitmap;
+
+extern BitmapLayer *s_background_step_layer;
+extern GBitmap *s_step_bitmap;
+
+extern BitmapLayer *s_background_wstep_layer;
+extern GBitmap *s_wstep_bitmap;
